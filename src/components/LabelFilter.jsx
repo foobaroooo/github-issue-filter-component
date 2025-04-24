@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import octokit from "../api/github-api";
 import GithubFilter from "./GithubFilter";
 
-const LabelFilter = () => {
+const LabelFilter = ({ children }) => {
   const [labels, setLabels] = useState([]);
   useEffect(() => {
     const fetchLabels = async () => {
@@ -19,7 +19,7 @@ const LabelFilter = () => {
   }, []);
 
   // todo - render labels
-  return <GithubFilter />;
+  return <GithubFilter placeHolder="Filter labels" children={children} />;
 };
 
 export default LabelFilter;

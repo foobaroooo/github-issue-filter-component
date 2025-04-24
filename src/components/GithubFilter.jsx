@@ -3,6 +3,7 @@ import {
   autoUpdate,
   size,
   flip,
+  offset,
   useId,
   useDismiss,
   useFloating,
@@ -36,7 +37,7 @@ const Item = forwardRef(({ children, active, ...rest }, ref) => {
   );
 });
 
-function GithubFilter() {
+function GithubFilter({ placeHolder, children }) {
   const [open, setOpen] = useState(false);
   const [inputValue, setInputValue] = useState("");
   const [activeIndex, setActiveIndex] = useState(null);
@@ -45,10 +46,11 @@ function GithubFilter() {
 
   const { refs, floatingStyles, context } = useFloating({
     whileElementsMounted: autoUpdate,
-    open,
+    open: open,
     placement: 'bottom',
     onOpenChange: setOpen,
     middleware: [
+      offset(5),
       flip({ padding: 10 }),
       size({
         apply({ rects, availableHeight, elements }) {
@@ -94,20 +96,26 @@ function GithubFilter() {
 
   return (
     <>
-      <button {...getReferenceProps({
-        ref: refs.setReference,
-        onClick: () => setOpen(!open),
-      })}>
-        Filter labels
+      <button 
+        tabIndex={0}
+        ref={refs.setReference}
+        aria-labelledby="select-label"
+        aria-autocomplete="none"
+        style={{ width: 150, lineHeight: 2, margin: "auto" }}
+        {...getReferenceProps({
+          onClick: () => setOpen(!open),
+        })}
+      >
+        {children}
       </button>
       {open && (
-        <div>
+        <div style={{floatingStyles}} ref={refs.setFloating}>
           <input
             {...getReferenceProps({
               ref: refs.setReference,
               onChange,
               value: inputValue,
-              placeholder: "Filter labels",
+              placeholder: placeHolder,
               "aria-autocomplete": "list",
               onKeyDown(event) {
                 if (
@@ -120,7 +128,8 @@ function GithubFilter() {
                   setOpen(false);
                 }
               },
-            })}
+            })
+          }
           />
           <FloatingPortal>
             <FloatingFocusManager

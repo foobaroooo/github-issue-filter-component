@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import octokit from "../api/github-api";
 import GithubFilter from "./GithubFilter";
 
-const MilestoneFilter = () => {
+const MilestoneFilter = ({ children }) => {
   const [milestones, setMilestones] = useState([]);
   useEffect(() => {
     const fetchMilestones = async () => {
@@ -19,7 +19,7 @@ const MilestoneFilter = () => {
   }, []);
 
   // todo - render milestones
-  return <GithubFilter />;
+  return <GithubFilter placeHolder="Filter milestones" children={children} />;
 };
 
 export default MilestoneFilter;

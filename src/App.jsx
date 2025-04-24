@@ -8,9 +8,9 @@ function App() {
     <>
       <h1 className="text-3xl font-bold m-5">Github Issue filters</h1>
       <div className="flex gap-4 m-5">
-        <AuthorFilter />
-        <LabelFilter />
-        <MilestoneFilter />
+        <AuthorFilter>Author</AuthorFilter>
+        <LabelFilter>Label</LabelFilter>
+        <MilestoneFilter>Milestone</MilestoneFilter>
       </div>
     </>
   );

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import octokit from "../api/github-api";
 import GithubFilter from "./GithubFilter";
 
-const AuthorFilter = () => {
+const AuthorFilter = ({ children }) => {
   const [authors, setAuthors] = useState([]);
   useEffect(() => {
     const fetchAuthors = async () => {
@@ -19,6 +19,6 @@ const AuthorFilter = () => {
   }, []);
 
   // todo - render authors
-  return <GithubFilter />;
+  return <GithubFilter placeHolder="Filter authors" children={children} />;
 };
 export default AuthorFilter;
