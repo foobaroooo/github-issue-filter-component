@@ -14,7 +14,6 @@ import {
   FloatingFocusManager,
   FloatingPortal,
 } from "@floating-ui/react";
-import { data } from "../data";
 
 const Item = forwardRef(({ children, active, ...rest }, ref) => {
   const id = useId();
@@ -37,13 +36,12 @@ const Item = forwardRef(({ children, active, ...rest }, ref) => {
   );
 });
 
-function GithubFilter({ placeHolder, children }) {
+function GithubFilter({ data, placeHolder, children }) {
   const [open, setOpen] = useState(false);
   const [inputValue, setInputValue] = useState("");
   const [activeIndex, setActiveIndex] = useState(null);
-
   const listRef = useRef([]);
-
+  
   const { refs, floatingStyles, context } = useFloating({
     whileElementsMounted: autoUpdate,
     open: open,
@@ -88,11 +86,14 @@ function GithubFilter({ placeHolder, children }) {
     } else {
       setOpen(false);
     }
-  }
+  } 
 
-  const items = data.filter((item) =>
-    item.toLowerCase().startsWith(inputValue.toLowerCase())
-  );
+  //console.log('GithubFilter data', data);
+
+  const items = (data).filter((item) => {
+    console.log('inputValue', inputValue);
+    return item.login.toLowerCase().startsWith(inputValue.toLowerCase())
+  });
 
   return (
     <>
@@ -123,7 +124,7 @@ function GithubFilter({ placeHolder, children }) {
                   activeIndex != null &&
                   items[activeIndex]
                 ) {
-                  setInputValue(items[activeIndex]);
+                  setInputValue(items[activeIndex].login);
                   setActiveIndex(null);
                   setOpen(false);
                 }
@@ -150,20 +151,20 @@ function GithubFilter({ placeHolder, children }) {
               >
                 {items.map((item, index) => (
                   <Item
-                    key={item}
+                    key={item.login}
                     {...getItemProps({
                       ref(node) {
                         listRef.current[index] = node;
                       },
                       onClick() {
-                        setInputValue(item);
+                        setInputValue(item.login);
                         setOpen(false);
                         refs.domReference.current?.focus();
                       },
                     })}
                     active={activeIndex === index}
                   >
-                    {item}
+                    {item.login}
                   </Item>
                 ))}
               </div>

@@ -4,21 +4,35 @@ import GithubFilter from "./GithubFilter";
 
 const AuthorFilter = ({ children }) => {
   const [authors, setAuthors] = useState([]);
+
   useEffect(() => {
     const fetchAuthors = async () => {
-      const { data } = await octokit.request(
-        "GET /repos/{owner}/{repo}/contributors",
-        {
-          owner: "facebook",
-          repo: "react",
-        }
-      );
-      setAuthors(data);
+      try {
+        const response= await octokit.request(
+          "GET /repos/{owner}/{repo}/contributors",
+          {
+            owner: "facebook",
+            repo: "react",
+          }
+        );
+  
+        //console.log(response.data);
+
+        setAuthors(response.data);
+      } catch (error) {
+        console.error(error);
+      } 
     };
     fetchAuthors();
   }, []);
 
   // todo - render authors
-  return <GithubFilter placeHolder="Filter authors" children={children} />;
+  return <GithubFilter 
+            data={authors} 
+            placeHolder="Filter authors" 
+            children={children} 
+          />;
 };
 export default AuthorFilter;
+
+
