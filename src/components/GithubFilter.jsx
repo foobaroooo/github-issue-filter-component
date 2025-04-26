@@ -14,8 +14,10 @@ import {
   FloatingFocusManager,
   FloatingPortal,
 } from "@floating-ui/react";
+import { FaAngleDown } from "react-icons/fa6";
+import { MdClose } from "react-icons/md";
 
-const Item = forwardRef(({ children, active, ...rest }, ref) => {
+const Item = ({ children, active, ...rest }, ref) => {
   const id = useId();
   return (
     <div
@@ -26,7 +28,7 @@ const Item = forwardRef(({ children, active, ...rest }, ref) => {
       {...rest}
       style={{
         background: active ? "lightblue" : "none",
-        padding: 4,
+        padding: "5px 15px",
         cursor: "default",
         ...rest.style,
       }}
@@ -34,7 +36,7 @@ const Item = forwardRef(({ children, active, ...rest }, ref) => {
       {children}
     </div>
   );
-});
+};
 
 function GithubFilter({ data, placeHolder, children }) {
   const [open, setOpen] = useState(false);
@@ -91,7 +93,6 @@ function GithubFilter({ data, placeHolder, children }) {
   //console.log('GithubFilter data', data);
 
   const items = (data).filter((item) => {
-    console.log('inputValue', inputValue);
     return item.login.toLowerCase().startsWith(inputValue.toLowerCase())
   });
 
@@ -100,24 +101,35 @@ function GithubFilter({ data, placeHolder, children }) {
       <button 
         tabIndex={0}
         ref={refs.setReference}
-        aria-labelledby="select-label"
-        aria-autocomplete="none"
-        style={{ width: 150, lineHeight: 2, margin: "auto" }}
-        {...getReferenceProps({
+        style={{ width: 150, lineHeight: 2 }}
+        {...getReferenceProps({ 
           onClick: () => setOpen(!open),
         })}
       >
         {children}
+        <span>
+          <FaAngleDown />
+        </span>
       </button>
       {open && (
-        <div style={{floatingStyles}} ref={refs.setFloating}>
+        <div
+          ref={refs.setFloating}
+          // style={floatingStyles}
+          className="bg-white border border-gray-200 shadow-md text-xs w-64 flex flex-col rounded-lg"
+        >
+          <div className="m-2 pl-1 font-semibold flex items-center">
+            <button onClick={() => setOpen(false)} className="ml-auto px-1 ">
+              <MdClose className="w-4 h-4" />
+            </button>
+          </div>
+          <hr />
           <input
             {...getReferenceProps({
               ref: refs.setReference,
               onChange,
               value: inputValue,
               placeholder: placeHolder,
-              "aria-autocomplete": "list",
+//              "aria-autocomplete": "list",
               onKeyDown(event) {
                 if (
                   event.key === "Enter" &&
@@ -132,6 +144,7 @@ function GithubFilter({ data, placeHolder, children }) {
             })
           }
           />
+          <hr />
           <FloatingPortal>
             <FloatingFocusManager
               context={context}
@@ -151,6 +164,7 @@ function GithubFilter({ data, placeHolder, children }) {
               >
                 {items.map((item, index) => (
                   <Item
+                     className="overflow-auto h-64 flex flex-col"
                     key={item.login}
                     {...getItemProps({
                       ref(node) {
@@ -164,7 +178,14 @@ function GithubFilter({ data, placeHolder, children }) {
                     })}
                     active={activeIndex === index}
                   >
-                    {item.login}
+                    <div className="flex items-center gap-2">
+                      <img 
+                        src={item.avatar_url} 
+                        alt={`${item.login}'s avatar`}
+                        className="w-1 h-4 rounded-lg border border-gray-300"
+                      />
+                      {item.login}
+                    </div>
                   </Item>
                 ))}
               </div>
