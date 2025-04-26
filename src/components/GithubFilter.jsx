@@ -21,17 +21,12 @@ const Item = ({ children, active, ...rest }, ref) => {
   const id = useId();
   return (
     <div
-      ref={ref}
+      className={`border-b border-gray-200 px-6 py-2 w-full ${active ? 'bg-blue-100' : ''}`}
+      ref={ref} 
       role="option"
       id={id}
       aria-selected={active}
       {...rest}
-      style={{
-        background: active ? "lightblue" : "none",
-        padding: "5px",
-        cursor: "default",
-        ...rest.style,
-      }}
     >
       {children}
     </div>
@@ -114,8 +109,8 @@ function GithubFilter({ data, placeHolder, children }) {
       {open && (
         <div
           ref={refs.setFloating}
-          // style={floatingStyles}
-          className="bg-white border border-gray-200 shadow-md text-xs w-64 flex flex-col rounded-lg"
+          // style={floatingStyles} 
+          className="bg-[#eee] border-2 shadow-lg shadow-purple-500/50 text-xs w-64 flex flex-col rounded-lg hover:scale-105 transition-all duration-300"
         >
           <div className="m-2 pl-1 font-semibold flex items-center">
             <button onClick={() => setOpen(false)} className="ml-auto px-1 ">
