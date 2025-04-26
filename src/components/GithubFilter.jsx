@@ -28,7 +28,7 @@ const Item = ({ children, active, ...rest }, ref) => {
       {...rest}
       style={{
         background: active ? "lightblue" : "none",
-        padding: "5px 15px",
+        padding: "5px",
         cursor: "default",
         ...rest.style,
       }}
@@ -101,7 +101,7 @@ function GithubFilter({ data, placeHolder, children }) {
       <button 
         tabIndex={0}
         ref={refs.setReference}
-        style={{ width: 150, lineHeight: 2 }}
+        className="w-40 h-8 border border-gray-300 rounded-lg px-2 flex items-center justify-between"
         {...getReferenceProps({ 
           onClick: () => setOpen(!open),
         })}
@@ -164,7 +164,6 @@ function GithubFilter({ data, placeHolder, children }) {
               >
                 {items.map((item, index) => (
                   <Item
-                     className="overflow-auto h-64 flex flex-col"
                     key={item.login}
                     {...getItemProps({
                       ref(node) {
@@ -182,7 +181,7 @@ function GithubFilter({ data, placeHolder, children }) {
                       <img 
                         src={item.avatar_url} 
                         alt={`${item.login}'s avatar`}
-                        className="w-1 h-4 rounded-lg border border-gray-300"
+                        className="w-4 h-4 rounded-lg border border-gray-300"
                       />
                       {item.login}
                     </div>
