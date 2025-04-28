@@ -79,8 +79,6 @@ function GithubFilter({ data, placeHolder, renderItem, children }) {
     if (value) {
       setOpen(true);
       setActiveIndex(0);
-    } else {
-      setOpen(false);
     }
   } 
 
@@ -96,19 +94,18 @@ function GithubFilter({ data, placeHolder, renderItem, children }) {
         tabIndex={0}
         ref={refs.setReference}
         className="w-40 h-8 border border-gray-300 rounded-lg px-2 flex items-center justify-between"
-        {...getReferenceProps({ 
-          onClick: () => setOpen(!open),
-        })}
+        {...getReferenceProps()}
+        onClick={() => setOpen(!open)}
       >
         {children}
         <span>
-          <FaAngleDown />
+          <FaAngleDown className={`transform ${open ? "rotate-180" : ""}`} />
         </span>
       </button>
       {open && (
         <div
           ref={refs.setFloating}
-          // style={floatingStyles} 
+          style={floatingStyles} 
           className="bg-[#eee] border-2 shadow-lg shadow-purple-500/50 text-xs w-64 flex flex-col rounded-lg hover:scale-105 transition-all duration-300"
         >
           <div className="m-2 pl-1 font-semibold flex items-center">
@@ -116,29 +113,19 @@ function GithubFilter({ data, placeHolder, renderItem, children }) {
               <MdClose className="w-4 h-4" />
             </button>
           </div>
+
           <hr />
+          
           <input
-            {...getReferenceProps({
-              ref: refs.setReference,
-              onChange,
-              value: inputValue,
-              placeholder: placeHolder,
-//              "aria-autocomplete": "list",
-              onKeyDown(event) {
-                if (
-                  event.key === "Enter" &&
-                  activeIndex != null &&
-                  items[activeIndex]
-                ) {
-                  setInputValue(event.target.value);
-                  setActiveIndex(null);
-                  setOpen(false);
-                }
-              },
-            })
-          }
+            type="text"
+            placeholder={placeHolder}
+            className="m-2 p-2 border border-gray-300 rounded-lg"
+            value={inputValue}
+            onChange={(e) => onChange(e)}
           />
+
           <hr />
+          
           <FloatingPortal>
             <FloatingFocusManager
               context={context}
@@ -165,7 +152,6 @@ function GithubFilter({ data, placeHolder, renderItem, children }) {
                       },
                       onClick() {
                         setInputValue(item.login);
-                        setOpen(false);
                         refs.domReference.current?.focus();
                       },
                     })}
