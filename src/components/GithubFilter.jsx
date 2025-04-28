@@ -17,7 +17,7 @@ import {
 import { FaAngleDown } from "react-icons/fa6";
 import { MdClose } from "react-icons/md";
 
-const Item = ({ children, active, ...rest }, ref) => {
+const Item = ({ active, ...rest }, ref) => {
   const id = useId();
   return (
     <div
@@ -28,12 +28,11 @@ const Item = ({ children, active, ...rest }, ref) => {
       aria-selected={active}
       {...rest}
     >
-      {children}
     </div>
   );
 };
 
-function GithubFilter({ data, placeHolder, children }) {
+function GithubFilter({ data, placeHolder, renderItem, children }) {
   const [open, setOpen] = useState(false);
   const [inputValue, setInputValue] = useState("");
   const [activeIndex, setActiveIndex] = useState(null);
@@ -131,7 +130,7 @@ function GithubFilter({ data, placeHolder, children }) {
                   activeIndex != null &&
                   items[activeIndex]
                 ) {
-                  setInputValue(items[activeIndex].login);
+                  setInputValue(event.target.value);
                   setActiveIndex(null);
                   setOpen(false);
                 }
@@ -159,7 +158,7 @@ function GithubFilter({ data, placeHolder, children }) {
               >
                 {items.map((item, index) => (
                   <Item
-                    key={item.login}
+                    key={item.id}
                     {...getItemProps({
                       ref(node) {
                         listRef.current[index] = node;
@@ -172,14 +171,7 @@ function GithubFilter({ data, placeHolder, children }) {
                     })}
                     active={activeIndex === index}
                   >
-                    <div className="flex items-center gap-2">
-                      <img 
-                        src={item.avatar_url} 
-                        alt={`${item.login}'s avatar`}
-                        className="w-4 h-4 rounded-lg border border-gray-300"
-                      />
-                      {item.login}
-                    </div>
+                    {renderItem(item)}
                   </Item>
                 ))}
               </div>

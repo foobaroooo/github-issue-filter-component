@@ -26,11 +26,20 @@ const AuthorFilter = ({ children }) => {
     fetchAuthors();
   }, []);
 
+  const renderAuthor = (item) => {
+    return (
+      <div className="flex items-center gap-2">
+        <img src={item.avatar_url} alt={`${item.login}'s avatar`} className="w-4 h-4 rounded-lg border border-gray-300" />
+        {item.login}
+      </div>
+    );
+  };
   // todo - render authors
   return <GithubFilter 
             data={authors} 
             placeHolder="Filter authors" 
             children={children} 
+            renderItem={renderAuthor}
           />;
 };
 export default AuthorFilter;
