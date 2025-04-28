@@ -106,7 +106,7 @@ function GithubFilter({ data, placeHolder, renderItem, children }) {
         <div
           ref={refs.setFloating}
           style={floatingStyles} 
-          className="bg-[#eee] border-2 shadow-lg shadow-purple-500/50 text-xs w-64 flex flex-col rounded-lg hover:scale-105 transition-all duration-300"
+          className="bg-[#eee] shadow-lg text-xs w-64 flex flex-col rounded-lg"
         >
           <div className="m-2 pl-1 font-semibold flex items-center">
             <button onClick={() => setOpen(false)} className="ml-auto px-1 ">
@@ -140,6 +140,7 @@ function GithubFilter({ data, placeHolder, renderItem, children }) {
                     background: "#eee",
                     color: "black",
                     overflowY: "auto",
+                    top: "80px",
                   },
                 })}
               >
