@@ -21,7 +21,7 @@ const Item = forwardRef(({ active, ...rest }, ref) => {
   const id = useId();
   return (
     <div
-      className={`border-b border-gray-200 px-6 py-2 w-full ${active ? 'bg-blue-100' : ''}`}
+      className={`px-3 py-2 text-sm hover:bg-gray-100 cursor-pointer ${active ? 'bg-blue-50' : ''}`}
       ref={ref} 
       role="option"
       id={id}
@@ -90,7 +90,7 @@ function GithubFilter({ data, placeHolder, renderItem, children }) {
       <button 
         tabIndex={0}
         ref={refs.setReference}
-        className="w-40 h-8 border border-gray-300 rounded-lg px-2 flex items-center justify-between"
+        className="w-40 h-8 border border-gray-300 rounded-md px-2 flex items-center justify-between hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
         {...getReferenceProps()}
         onClick={() => setOpen(!open)}
       >
@@ -106,35 +106,30 @@ function GithubFilter({ data, placeHolder, renderItem, children }) {
             <div
               ref={refs.setFloating}
               style={floatingStyles}
-              className="bg-[#eee] shadow-lg text-xs w-64 flex flex-col rounded-lg"
+              className="bg-white shadow-lg rounded-md border border-gray-200 w-64"
               {...getFloatingProps()}
             >
-              <div className="m-2 pl-1 font-semibold flex items-center">
+              <div className="p-2 border-b border-gray-200 flex items-center">
+                <input
+                  type="text"
+                  placeholder={placeHolder}
+                  className="w-full px-2 py-1 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  value={inputValue}
+                  onChange={onChange}
+                  aria-label="Filter input"
+                />
                 <button 
                   onClick={() => setOpen(false)} 
-                  className="ml-auto px-1"
+                  className="ml-2 p-1 hover:bg-gray-100 rounded-md"
                   aria-label="Close filter"
                 >
-                  <MdClose className="w-4 h-4" />
+                  <MdClose className="w-4 h-4 text-gray-500" />
                 </button>
               </div>
-
-              <hr />
-              
-              <input
-                type="text"
-                placeholder={placeHolder}
-                className="m-2 p-2 border border-gray-300 rounded-lg"
-                value={inputValue}
-                onChange={onChange}
-                aria-label="Filter input"
-              />
-
-              <hr />
               
               <div
                 role="listbox"
-                className="overflow-y-auto max-h-60"
+                className="py-1 max-h-60 overflow-y-auto"
               >
                 {items.map((item, index) => (
                   <Item
