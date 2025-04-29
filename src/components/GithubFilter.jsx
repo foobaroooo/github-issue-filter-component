@@ -107,6 +107,7 @@ function GithubFilter({ data, placeHolder, renderItem, children }) {
           ref={refs.setFloating}
           style={floatingStyles} 
           className="bg-[#eee] shadow-lg text-xs w-64 flex flex-col rounded-lg"
+          {...getFloatingProps()}
         >
           <div className="m-2 pl-1 font-semibold flex items-center">
             <button onClick={() => setOpen(false)} className="ml-auto px-1 ">
@@ -150,11 +151,7 @@ function GithubFilter({ data, placeHolder, renderItem, children }) {
                     {...getItemProps({
                       ref(node) {
                         listRef.current[index] = node;
-                      },
-                      onClick() {
-                        setInputValue(item.login);
-                        refs.domReference.current?.focus();
-                      },
+                      }
                     })}
                     active={activeIndex === index}
                   >
