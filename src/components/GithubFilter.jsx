@@ -132,6 +132,7 @@ function GithubFilter({ data, placeHolder, renderItem, children }) {
               context={context}
               initialFocus={-1}
               visuallyHiddenDismiss
+              modal={false}
             >
               <div
                 {...getFloatingProps({
@@ -151,7 +152,10 @@ function GithubFilter({ data, placeHolder, renderItem, children }) {
                     {...getItemProps({
                       ref(node) {
                         listRef.current[index] = node;
-                      }
+                      },
+                      onClick() {
+                        setOpen(false);
+                      },
                     })}
                     active={activeIndex === index}
                   >
