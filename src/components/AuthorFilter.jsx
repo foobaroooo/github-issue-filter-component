@@ -26,6 +26,10 @@ const AuthorFilter = ({ children }) => {
     fetchAuthors();
   }, []);
 
+  const filterFunc = (item, inputValue) => {
+    return item.login.toLowerCase().startsWith(inputValue.toLowerCase());
+  };
+
   const renderAuthor = (item) => {
     return (
       <div className="flex items-center gap-2">
@@ -40,6 +44,7 @@ const AuthorFilter = ({ children }) => {
             placeHolder="Filter authors" 
             children={children} 
             renderItem={renderAuthor}
+            filterFunc={filterFunc}
           />;
 };
 export default AuthorFilter;

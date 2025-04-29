@@ -31,7 +31,7 @@ const Item = forwardRef(({ active, ...rest }, ref) => {
   );
 });
 
-function GithubFilter({ data, placeHolder, renderItem, children }) {
+function GithubFilter({ data, placeHolder, renderItem, filterFunc, children }) {
   const [open, setOpen] = useState(false);
   const [inputValue, setInputValue] = useState("");
   const [activeIndex, setActiveIndex] = useState(null);
@@ -81,9 +81,7 @@ function GithubFilter({ data, placeHolder, renderItem, children }) {
     }
   }
 
-  const items = data.filter((item) => {
-    return item.login.toLowerCase().startsWith(inputValue.toLowerCase());
-  });
+  const items = data.filter((item) => filterFunc(item, inputValue));
 
   return (
     <>
