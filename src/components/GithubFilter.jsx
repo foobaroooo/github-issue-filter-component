@@ -17,7 +17,7 @@ import {
 import { FaAngleDown } from "react-icons/fa6";
 import { MdClose } from "react-icons/md";
 
-const Item = ({ active, ...rest }, ref) => {
+const Item = forwardRef(({ active, ...rest }, ref) => {
   const id = useId();
   return (
     <div
@@ -27,10 +27,9 @@ const Item = ({ active, ...rest }, ref) => {
       id={id}
       aria-selected={active}
       {...rest}
-    >
-    </div>
+    />
   );
-};
+});
 
 function GithubFilter({ data, placeHolder, renderItem, children }) {
   const [open, setOpen] = useState(false);
@@ -80,12 +79,10 @@ function GithubFilter({ data, placeHolder, renderItem, children }) {
       setOpen(true);
       setActiveIndex(0);
     }
-  } 
+  }
 
-  //console.log('GithubFilter data', data);
-
-  const items = (data).filter((item) => {
-    return item.login.toLowerCase().startsWith(inputValue.toLowerCase())
+  const items = data.filter((item) => {
+    return item.login.toLowerCase().startsWith(inputValue.toLowerCase());
   });
 
   return (
@@ -102,49 +99,42 @@ function GithubFilter({ data, placeHolder, renderItem, children }) {
           <FaAngleDown className={`transform ${open ? "rotate-180" : ""}`} />
         </span>
       </button>
-      {open && (
-        <div
-          ref={refs.setFloating}
-          style={floatingStyles} 
-          className="bg-[#eee] shadow-lg text-xs w-64 flex flex-col rounded-lg"
-          {...getFloatingProps()}
-        >
-          <div className="m-2 pl-1 font-semibold flex items-center">
-            <button onClick={() => setOpen(false)} className="ml-auto px-1 ">
-              <MdClose className="w-4 h-4" />
-            </button>
-          </div>
-
-          <hr />
-          
-          <input
-            type="text"
-            placeholder={placeHolder}
-            className="m-2 p-2 border border-gray-300 rounded-lg"
-            value={inputValue}
-            onChange={(e) => onChange(e)}
-          />
-
-          <hr />
-          
-          <FloatingPortal>
-            <FloatingFocusManager
-              context={context}
-              initialFocus={-1}
-              visuallyHiddenDismiss
-              modal={false}
+      
+      <FloatingPortal>
+        {open && (
+          <FloatingFocusManager context={context} modal={false}>
+            <div
+              ref={refs.setFloating}
+              style={floatingStyles}
+              className="bg-[#eee] shadow-lg text-xs w-64 flex flex-col rounded-lg"
+              {...getFloatingProps()}
             >
+              <div className="m-2 pl-1 font-semibold flex items-center">
+                <button 
+                  onClick={() => setOpen(false)} 
+                  className="ml-auto px-1"
+                  aria-label="Close filter"
+                >
+                  <MdClose className="w-4 h-4" />
+                </button>
+              </div>
+
+              <hr />
+              
+              <input
+                type="text"
+                placeholder={placeHolder}
+                className="m-2 p-2 border border-gray-300 rounded-lg"
+                value={inputValue}
+                onChange={onChange}
+                aria-label="Filter input"
+              />
+
+              <hr />
+              
               <div
-                {...getFloatingProps({
-                  ref: refs.setFloating,
-                  style: {
-                    ...floatingStyles,
-                    background: "#eee",
-                    color: "black",
-                    overflowY: "auto",
-                    top: "80px",
-                  },
-                })}
+                role="listbox"
+                className="overflow-y-auto max-h-60"
               >
                 {items.map((item, index) => (
                   <Item
@@ -155,7 +145,7 @@ function GithubFilter({ data, placeHolder, renderItem, children }) {
                       },
                       onClick() {
                         setOpen(false);
-                      },
+                      }
                     })}
                     active={activeIndex === index}
                   >
@@ -163,10 +153,10 @@ function GithubFilter({ data, placeHolder, renderItem, children }) {
                   </Item>
                 ))}
               </div>
-            </FloatingFocusManager>
-          </FloatingPortal>
-        </div>
-      )}
+            </div>
+          </FloatingFocusManager>
+        )}
+      </FloatingPortal>
     </>
   );
 }
